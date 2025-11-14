@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 st.set_page_config(page_title="Superstore Dashboard", layout="wide")
 
 def load_data():
-    df = pd.read_excel("https://raw.githubusercontent.com/Saifullah-404/PITP_Project/main/US%20Superstore%20data.xls")
+    df = pd.read_excel("https://raw.githubusercontent.com/Saifullah-404/PITP_Project/main/US%20Superstore%20data.xls",engine="xlrd")
 
     remove_cols = [
         'Row ID', 'Order ID', 'Customer ID', 'Customer Name',
