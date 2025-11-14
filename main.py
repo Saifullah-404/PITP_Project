@@ -1,30 +1,20 @@
-# ============================================
-# Superstore Business Dashboard
-# ============================================
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
-# Streamlit Page Setup
 st.set_page_config(page_title="Superstore Dashboard", layout="wide")
 
-# ------------------------------
-# 1. Load Data (Simplified)
-# ------------------------------
 def load_data():
     df = pd.read_excel("superstore.xlsx")
 
-    # Remove unnecessary columns
     remove_cols = [
         'Row ID', 'Order ID', 'Customer ID', 'Customer Name',
         'Product ID', 'Product Name', 'Country', 'Postal Code'
     ]
     df = df.drop(columns=[c for c in remove_cols if c in df.columns], errors="ignore")
 
-    # Convert dates
     df["Order Date"] = pd.to_datetime(df["Order Date"], errors="ignore")
     df["Ship Date"] = pd.to_datetime(df["Ship Date"], errors="ignore")
 
@@ -32,9 +22,6 @@ def load_data():
 
 df = load_data()
 
-# ------------------------------
-# 2. Sidebar Filters
-# ------------------------------
 st.sidebar.header("Filter Options")
 
 regions = df["Region"].dropna().unique().tolist()
@@ -48,9 +35,6 @@ filtered_df = df[
     (df["Category"].isin(selected_categories))
 ]
 
-# ------------------------------
-# 3. KPI Metrics
-# ------------------------------
 total_sales = filtered_df["Sales"].sum()
 total_profit = filtered_df["Profit"].sum()
 avg_discount = filtered_df["Discount"].mean()
@@ -64,16 +48,11 @@ col4.metric("Total Orders", f"{total_orders:,}")
 
 st.markdown("---")
 
-# ------------------------------
-# 4. Tabs
-# ------------------------------
 tab1, tab2, tab3 = st.tabs(["Sales Overview", "Profit Trend", "Prediction"])
 
-# ---- Tab 1: Sales Overview ----
 with tab1:
     colA, colB = st.columns(2)
 
-    # Bar chart: Sub-category sales
     with colA:
         st.subheader("Sales by Sub-Category")
         fig, ax = plt.subplots()
@@ -83,7 +62,6 @@ with tab1:
         plt.xticks(rotation=45)
         st.pyplot(fig)
 
-    # Pie chart: Region sales distribution
     with colB:
         st.subheader("Sales by Region")
         region_sales = filtered_df.groupby("Region")["Sales"].sum()
@@ -92,7 +70,6 @@ with tab1:
         ax.axis("equal")
         st.pyplot(fig)
 
-# ---- Tab 2: Profit Trend ----
 with tab2:
     st.subheader("Profit Over Time")
 
@@ -104,7 +81,6 @@ with tab2:
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
-# ---- Tab 3: Profit Prediction ----
 with tab3:
     st.subheader("Predict Profit (Random Forest)")
 
@@ -118,7 +94,6 @@ with tab3:
     model = RandomForestRegressor(n_estimators=120, random_state=42)
     model.fit(X_train, y_train)
 
-    # Inputs
     col1, col2, col3 = st.columns(3)
     inp_sales = col1.number_input("Sales", min_value=0.0, value=500.0)
     inp_discount = col2.number_input("Discount", min_value=0.0, max_value=1.0, value=0.1)
