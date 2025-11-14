@@ -3,3 +3,5 @@ pandas
 matplotlib
 scikit-learn
 openpyxl
+xlrd==1.2.0
+requests
