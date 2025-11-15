@@ -35,6 +35,8 @@ filtered_df = df[
     (df["Category"].isin(selected_categories))
 ]
 
+st.title("Superstore Business Dashboard")
+
 total_sales = filtered_df["Sales"].sum()
 total_profit = filtered_df["Profit"].sum()
 avg_discount = filtered_df["Discount"].mean()
