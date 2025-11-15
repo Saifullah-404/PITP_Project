@@ -82,7 +82,7 @@ with tab2:
     st.pyplot(fig)
 
 with tab3:
-    st.subheader("Predict Profit (Random Forest)")
+    st.subheader("Predict Profit")
 
     X = df[["Sales", "Discount", "Quantity"]]
     y = df["Profit"]
